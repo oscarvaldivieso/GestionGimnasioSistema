@@ -1,0 +1,149 @@
+﻿@model IEnumerable<GestionGimnasio.Models.tbPlanes>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Planes");
+}
+<div class="card">
+    <div class="card-header">
+        <p class="mb-0">
+            <button type="button" class="secondary-button mx-2" data-dismiss="modal" id="crear">
+                <span>
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                        <path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    Nuevo
+                </span>
+            </button>
+        </p>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" id="tablaIndex">
+                <thead>
+                    <tr>
+                        <th style="width:10%">
+                            Acciones
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Plane_Nombre)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Plane_Descripcion)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Plane_DuracionDias)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Plane_Precio)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-cogs"></i> Acciones
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <button class="btn btn-outline-warning" data-id="@item.Plane_Id" onclick="edit(@item.Plane_Id)" style="width:100%">
+                                      <i class="fas fa-pencil-alt"></i> Editar</button>
+                                    <a asp-action="Details" asp-route-id="@item.Plane_Id" class="btn btn-outline-info" style="width:100%">
+                                      <i class="fas fa-info"></i> Detalles</a>
+                                    <button class="btn btn-outline-danger" onclick="eliminar(@item.Plane_Id)"style="width:100%">
+                                      <i class="fas fa-trash-alt"></i> Eliminar</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Plane_Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Plane_Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Plane_DuracionDias)
+                        </td>
+                        <td>
+                            L. @Html.DisplayFor(modelItem => item.Plane_Precio)
+                        </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fadeInDownBig" tabindex="-1" role="dialog" id="modalCrear">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <partial name="_Create" model="new GestionGimnasio.Models.tbPlanes()"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fadeInDownBig" tabindex="-1" role="dialog" id="modalEditar">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0" id="modalbody">
+                <partial name="_Edit" model="new GestionGimnasio.Models.tbPlanes()"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script src="~/../js/plugin/datatables/datatables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#tablaIndex").DataTable();
+    });
+      //modal abrir
+    $("#crear").click(function(){
+        $("#modalCrear").modal("show");
+    });
+
+    //modal editar
+    function edit(id){
+        var url = "/Planes/Edit/" + id;
+        $("#modalbody").load(url, function(){
+            $("#modalEditar").modal("show");
+        });
+    }
+
+	//eliminar
+    function eliminar(id) {
+        localStorage.setItem("Plane_Id", id);
+            swal({
+                icon : "error",
+                title: 'Eliminar',
+                text: "¿Deseas eliminar este registro?",
+                type: 'warning',
+                buttons:{
+                    confirm: {
+                        text : 'Si, eliminar',
+                        className : 'btn btn-danger'
+                    },
+                    cancel: {
+                        visible: true,
+                        className: 'btn btn-danger btn-border'
+                    }
+                }
+            }).then((Delete) => {
+                if (Delete) {
+                    var id = localStorage.getItem("Plane_Id");
+                    var url = "/Planes/Delete/" + id;
+                    location.href = url;
+                } else {
+                    swal.close();
+                }
+            });
+    }
+</script>

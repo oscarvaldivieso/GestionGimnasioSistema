@@ -1,0 +1,170 @@
+﻿@model GestionGimnasio.Models.tbGimnasios
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Gimnasios");
+}
+
+
+
+    <!-- Card Structure -->
+    <div class="card" style="border-radius: 10px; overflow: hidden;">
+        <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+            <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+            "></div>
+            <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+            ">
+            <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Insertar un gimnasio</h5>
+            </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        
+                                    <div class="row"> 
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Gimna_Nombre" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <input asp-for="Gimna_Nombre" class="form-control" />
+                                            <span asp-validation-for="Gimna_Nombre" class="text-warning"></span>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Gimna_Direccion" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <input asp-for="Gimna_Direccion" class="form-control" />
+                                            <span asp-validation-for="Gimna_Direccion" class="text-warning"></span>
+                                        </div>
+                                    </div>  <!-- Cierra la fila después de dos campos -->
+                                    <div class="row">
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="Gimna_SemanaHoraApertura" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <input type="time" asp-for="Gimna_SemanaHoraApertura" class="form-control" />
+                                            <span asp-validation-for="Gimna_SemanaHoraApertura" class="text-warning"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="Gimna_SemanaHoraCierre" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <input type="time" asp-for="Gimna_SemanaHoraCierre" class="form-control" />
+                                            <span asp-validation-for="Gimna_SemanaHoraCierre" class="text-warning"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="Gimna_FinDeHoraApertura" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <input type="time" asp-for="Gimna_FinDeHoraApertura" class="form-control" />
+                                            <span asp-validation-for="Gimna_FinDeHoraApertura" class="text-warning"></span>
+                                        </div>
+                                        <div class="form-group col-md-3">
+                                            <label asp-for="Gimna_FinDeHoraCierre" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <input type="time" asp-for="Gimna_FinDeHoraCierre" class="form-control" />
+                                            <span asp-validation-for="Gimna_FinDeHoraCierre" class="text-warning"></span>
+
+                                        </div>
+                                    </div>  <!-- Cierra la fila después de dos campos -->
+                                    
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label  class="control-label">Departamentos</label>
+                                            <span class="text-danger">*</span>
+                                            <select id="Depar_Codigo" class="form-control" asp-items="ViewBag.Depar_Codigo">
+                                                <option value="" disabled>Seleccione un departamento</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label asp-for="Munic_Codigo" class="control-label"></label>
+                                            <span class="text-danger">*</span>
+                                            <select asp-for="Munic_Codigo" class="form-control" asp-items="ViewBag.Munic_Codigo"></select>
+                                            <span asp-validation-for="Munic_Codigo" class="text-warning"></span>
+                                        </div>
+                                    </div>
+                        <div class="form-group d-flex justify-content-center mt-3">
+                            <button type="submit" class="primary-button mx-2" id="guardar">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="#fff" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+                                    </svg>
+                                    Insertar
+                                </span>
+                            </button>
+                            <a class="secondary-button mx-2" asp-action="Index">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path fill="currentColor" d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                    </svg>
+                                    Cancelar
+                                </span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+       </div>
+   </div>
+
+
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script>
+    $("#Depar_Codigo").change(function () {
+    var cod = $("#Depar_Codigo").val();
+    $.ajax({
+        url: "/Gimnasios/CargarMunicipio",
+        method: "POST",
+        dataType: "json",
+        data: {cod:cod},
+        success: function (data) {
+            console.log(data);
+            $("#Munic_Codigo").empty();
+            $("#Munic_Codigo").append("<option value='0'>Seleccione Un Municipio:</option>")
+
+            $.each(data, function (key, value) {
+                $("#Munic_Codigo").append("<option value='" + value.munic_Codigo + "'>" + value.munic_Nombre + "</option>");
+            })
+        }
+    })
+    });
+
+    $(document).ready(function(){
+        $('#guardar').click(function(){
+            if($(".text-warning").length > 0){
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Rellena los campos necesarios.',
+                    position: 'topRight',
+                    timeout: 5000,
+                    close: false
+                });
+            }
+        });
+    })
+</script>

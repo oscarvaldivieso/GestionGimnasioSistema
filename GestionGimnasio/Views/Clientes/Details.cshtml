@@ -1,0 +1,127 @@
+﻿@model GestionGimnasio.Models.tbClientes
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Clientes");
+}
+<div class="card">
+    <div class="card-header" style="display:flex; justify-content:space-between">
+        <h1>Detalles</h1>
+        <div>
+            <a asp-action="Index" class="btn btn-warning" disable="disable">
+            <i class="fas fa-reply"></i>Volver</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Clien_Identidad)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Clien_Identidad)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    Nombre Completo
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Clien_PrimerNombre) @Html.DisplayFor(model => model.Clien_SegundoNombre) @Html.DisplayFor(model => model.Clien_PrimerApellido) @Html.DisplayFor(model => model.Clien_SegundoApellido)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Clien_Sexo)
+                </dt>
+                <dd>
+                    @{
+                        if (Model.Clien_Sexo == "M")
+                        {
+                            <p>Masculino</p>
+                        }
+                        else
+                        {
+                            <p>Femenino</p>
+                        }
+                    }
+                </dd>
+            </div>
+        </dl>
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Clien_Direccion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Clien_Direccion)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Clien_esMiembroActivo)
+                </dt>
+                <dd>
+                    @{
+                        if (Model.Clien_esMiembroActivo == true)
+                        {
+                            <p>Sí</p>
+                        }
+                        else
+                        {
+                            <p>No</p>
+                        }
+                    }
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.EsCiv)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EsCiv.EsCiv_Descripcion)
+                </dd>
+            </div>
+        </dl>
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Munic_CodigoNavigation)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Munic_CodigoNavigation.Munic_Codigo)
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+<div class="row"></div>
+<div class="card">
+    <div class="card-header">
+        <h3>Auditoria</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Accion</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Creacion</th>
+                    <td>@Html.DisplayFor(model => model.Usuar_CreacionNavigation.Usuar_Nombre)</td>
+                    <td>@Html.DisplayFor(model => model.Fecha_Creacion)</td>
+                </tr>
+                <tr>
+                    <th>Modificacion</th>
+                    <td>@Html.DisplayFor(model => model.Usuar_ModificacionNavigation.Usuar_Nombre)</td>
+                    <td>@Html.DisplayFor(model => model.Fecha_Modificacion)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

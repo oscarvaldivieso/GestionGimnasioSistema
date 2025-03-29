@@ -1,0 +1,502 @@
+﻿ 
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<title>Atlantis Lite - Bootstrap 4 Admin Dashboard</title>
+	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
+	<link rel="icon" href="img/icon.ico" type="image/x-icon" />
+
+	<!-- Font Awesome CDN -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
+	<!-- Fonts and icons -->
+	<script src="~/../js/plugin/webfont/webfont.min.js"></script>
+	<script>
+		WebFont.load({
+		google: {"families":["Lato:300,400,700,900"]},
+		custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['~/../css/fonts.min.css']},
+		active: function() {
+		sessionStorage.fonts = true;
+		}
+		});
+	</script>
+
+	<!-- CSS Files -->
+	<link rel="stylesheet" href="~/../css/bootstrap.min.css">
+	<link rel="stylesheet" href="~/../css/atlantis.min.css">
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+
+</head>
+<body>
+
+	@{
+		string esAdmin = "";
+		bool Permitido = true;
+
+
+		if (Context.Session.GetInt32("Id") == null)
+		{
+			<script type="text/javascript">
+				window.location.href = '/Home/Login';
+			</script>
+			var hola = 0;
+		}
+		else
+		{
+			esAdmin = Context.Session.GetString("Admin");
+
+
+			string[] pant1 = Context.Session.GetString("Pantallas").Split(',');
+			if (Context.Session.GetString("titulo") != "Home")
+			{
+				for (int i = 0; i < pant1.Length - 1; i++)
+				{
+					if (pant1[i] == Context.Session.GetString("titulo") || esAdmin == "True")
+					{
+						Permitido = true;
+						break;
+					}
+					else
+					{
+						Permitido = false;
+					}
+				}
+				if (!Permitido)
+				{
+					if (Context.Session.GetInt32("Rol") != 0 && Context.Session.GetString("Admin") != "True")
+					{
+						<script>
+							window.location.href = '/Home/Index';
+						</script>
+
+					}
+					else
+					{
+						<script>
+							window.location.href = '/Home/Index';
+						</script>
+					}
+
+				}
+			}
+		}
+	}
+	<div class="wrapper">
+		<div class="main-header">
+			<!-- Logo Header -->
+			<div class="logo-header" data-background-color="blue">
+
+				<a asp-controller="Home" asp-action="Index" class="logo">
+					<img src="~/img/logo-blanco.png" alt="navbar brand" class="navbar-brand" style="max-width: 70px;">
+					<span>JOlympus</span>
+				</a>
+				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon">
+						<i class="icon-menu"></i>
+					</span>
+				</button>
+				<button class="topbar-toggler more"><i class="icon-options-vertical"></i></button>
+				<div class="nav-toggle">
+					<button class="btn btn-toggle toggle-sidebar">
+						<i class="icon-menu"></i>
+					</button>
+				</div>
+			</div>
+			<!-- End Logo Header -->
+			<!-- Navbar Header -->
+			<nav class="navbar navbar-header navbar-expand-lg" data-background-color="blue2">
+
+				<div class="container-fluid">
+					<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+						<li class="nav-item toggle-nav-search hidden-caret">
+							<a class="nav-link" data-toggle="collapse" href="#search-nav" role="button" aria-expanded="false" aria-controls="search-nav">
+								<i class="fa fa-search"></i>
+							</a>
+						</li>
+
+
+						<li class="nav-item dropdown hidden-caret">
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
+								<div class="avatar-sm">
+									<img src="~/img/profile2.jpg" alt="..." class="avatar-img rounded-circle">
+								</div>
+							</a>
+							<ul class="dropdown-menu dropdown-user animated fadeIn">
+								<div class="dropdown-user-scroll scrollbar-outer">
+									<li>
+										<div class="user-box">
+											<div class="avatar-lg"><img src="~/img/profile2.jpg" alt="image profile" class="avatar-img rounded"></div>
+											<div class="u-text">
+												<h4>Hizrian</h4>
+											</div>
+										</div>
+									</li>
+									<li>
+										<a class="dropdown-item" asp-controller="Home" asp-action="Login" method="post">Logout</a>
+									</li>
+								</div>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<!-- End Navbar -->
+		</div>
+
+		<!-- Sidebar -->
+		<div class="sidebar sidebar-style-2">
+			<div class="sidebar-wrapper scrollbar scrollbar-inner">
+				<div class="sidebar-content">
+					<ul class="nav nav-primary">
+
+
+						@{
+							esAdmin = Context.Session.GetString("Admin");
+
+							if (Context.Session.GetInt32("Id") != null)
+							{
+								string[] pant = Context.Session.GetString("Pantallas").Split(',');
+
+								bool tieneAcceso = pant.Contains("Usuarios") || pant.Contains("Roles") || esAdmin == "True";
+								bool tieneGeneral = pant.Contains("Clientes") || pant.Contains("Departamentos") || pant.Contains("Cargos") || pant.Contains("Municipios") || pant.Contains("Estados Civiles") || esAdmin == "True";
+								bool tieneGimnasio = pant.Contains("Clases") || pant.Contains("Ejercicios") || pant.Contains("Empleados") || pant.Contains("Gimnasios") || pant.Contains("Rutinas") || esAdmin == "True";
+								bool tienePagos = pant.Contains("Metodos De Pago") || pant.Contains("Planes") || pant.Contains("Pagos") || esAdmin == "True";
+								bool tieneReportes = pant.Contains("Gimnasios Reporte") || pant.Contains("Miembros Activos") || esAdmin == "True";
+
+								@if (tieneAcceso)
+								{
+									<li class="nav-section">
+										<span class="sidebar-mini-icon">
+											<i class="fa fa-ellipsis-h"></i>
+										</span>
+										<h4 class="text-section">Acceso</h4>
+									</li>
+									<li class="nav-item @(ViewData["ActiveParent"]?.ToString() == "Acceso" ? "active submenu" : "")">
+										<a data-toggle="collapse" href="#acceso" class="collapsed" aria-expanded="false">
+											<i class="fas fa-user-lock"></i>
+											<p>Acceso</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse @(ViewData["ActiveParent"]?.ToString() == "Acceso" ? "show" : "")" id="acceso">
+											<ul class="nav nav-collapse">
+												@if (pant.Contains("Usuarios") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Usuarios" ? "active" : "")">
+														<a asp-area="" asp-controller="Usuarios" asp-action="Index">
+															<span class="sub-item">Usuarios</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Roles") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Roles" ? "active" : "")">
+														<a asp-area="" asp-controller="Roles" asp-action="Index">
+															<span class="sub-item">Roles</span>
+														</a>
+													</li>
+												}
+											</ul>
+										</div>
+									</li>
+								}
+								if (tieneGeneral)
+								{
+									<li class="nav-section">
+										<span class="sidebar-mini-icon">
+											<i class="fa fa-globe"></i>
+										</span>
+										<h4 class="text-section">General</h4>
+									</li>
+									<li class="nav-item @(ViewData["ActiveParent"]?.ToString() == "General" ? "active submenu" : "")">
+										<a data-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+											<i class="fas fa-globe"></i>
+											<p>General</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse @(ViewData["ActiveParent"]?.ToString() == "General" ? "show" : "")" id="dashboard">
+											<ul class="nav nav-collapse">
+												@if (pant.Contains("Departamentos") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Departamentos" ? "active" : "")">
+														<a asp-area="" asp-controller="Departamentos" asp-action="Index">
+															<span class="sub-item">Departamentos</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Municipios") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Municipios" ? "active" : "")">
+														<a asp-area="" asp-controller="Municipios" asp-action="Index">
+															<span class="sub-item">Municipios</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Estados Civiles") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Estados Civiles" ? "active" : "")">
+														<a asp-area="" asp-controller="EstadosCiviles" asp-action="Index">
+															<span class="sub-item">Estados Civiles</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Cargos") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Cargos" ? "active" : "")">
+														<a asp-area="" asp-controller="Cargos" asp-action="Index">
+															<span class="sub-item">Cargos</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Clientes") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Clientes" ? "active" : "")">
+														<a asp-area="" asp-controller="Clientes" asp-action="Index">
+															<span class="sub-item">Clientes</span>
+														</a>
+													</li>
+												}
+											</ul>
+										</div>
+									</li>
+								}
+								if (tieneGimnasio)
+								{
+									<li class="nav-section">
+										<span class="sidebar-mini-icon">
+											<i class="fas fa-dumbbell"></i>
+										</span>
+										<h4 class="text-section">Gimnasio</h4>
+									</li>
+									<li class="nav-item @(ViewData["ActiveParent"]?.ToString() == "Gimnasio" ? "active submenu" : "")">
+										<a data-toggle="collapse" href="#base">
+											<i class="fas fa-dumbbell"></i>
+											<p>Gimnasio</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse @(ViewData["ActiveParent"]?.ToString() == "Gimnasio" ? "show" : "")" id="base">
+											<ul class="nav nav-collapse">
+												@if (pant.Contains("Rutinas por Cliente") || esAdmin == "True")
+												{
+												<li class="@(ViewData["ActivePage"]?.ToString() == "Rutinas por cliente" ? "active" : "")">
+													<a asp-area="" asp-controller="RutinasClientesEjercicios" asp-action="Index">
+														<span class="sub-item">Rutinas por cliente</span>
+													</a>
+												</li>
+												}
+												@if (pant.Contains("Clases") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Clases" ? "active" : "")">
+														<a asp-area="" asp-controller="Clases" asp-action="Index">
+															<span class="sub-item">Clases</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Ejercicios") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Ejercicios" ? "active" : "")">
+														<a asp-area="" asp-controller="Ejercicios" asp-action="Index">
+															<span class="sub-item">Ejercicios</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Empleados") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Empleados" ? "active" : "")">
+														<a asp-area="" asp-controller="Empleados" asp-action="Index">
+															<span class="sub-item">Empleados</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Gimnasios") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Gimnasios" ? "active" : "")">
+														<a asp-area="" asp-controller="Gimnasios" asp-action="Index">
+															<span class="sub-item">Gimnasios</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Rutinas") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Rutinas" ? "active" : "")">
+														<a asp-area="" asp-controller="Rutinas" asp-action="Index">
+															<span class="sub-item">Rutinas</span>
+														</a>
+													</li>
+												}
+											</ul>
+										</div>
+									</li>
+								}
+								if (tienePagos)
+								{
+									<li class="nav-section">
+										<span class="sidebar-mini-icon">
+											<i class="fas fa-money-bill"></i>
+										</span>
+										<h4 class="text-section">Pagos</h4>
+									</li>
+									<li class="nav-item @(ViewData["ActiveParent"]?.ToString() == "Pagos" ? "active submenu" : "")">
+										<a data-toggle="collapse" href="#sidebarLayouts">
+											<i class="fas fa-money-bill"></i>
+											<p>Pagos</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse @(ViewData["ActiveParent"]?.ToString() == "Pagos" ? "show" : "")" id="sidebarLayouts">
+											<ul class="nav nav-collapse">
+												@if (pant.Contains("Pagos") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Pagos" ? "active" : "")">
+														<a asp-area="" asp-controller="Pagos" asp-action="Index">
+															<span class="sub-item">Pagos</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Metodos De Pago") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Metodos De Pago" ? "active" : "")">
+														<a asp-area="" asp-controller="MetodosDePago" asp-action="Index">
+															<span class="sub-item">Metodos de Pago</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Planes") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Planes" ? "active" : "")">
+														<a asp-area="" asp-controller="Planes" asp-action="Index">
+															<span class="sub-item">Planes</span>
+														</a>
+													</li>
+												}
+											</ul>
+										</div>
+									</li>
+								}
+								if (tieneReportes)
+								{
+									<li class="nav-section">
+										<span class="sidebar-mini-icon">
+											<i class="fa fa-ellipsis-h"></i>
+										</span>
+										<h4 class="text-section">Reporteria</h4>
+									</li>
+									<li class="nav-item @(ViewData["ActiveParent"]?.ToString() == "Reportes" ? "active submenu" : "")">
+										<a data-toggle="collapse" href="#reportes" class="collapsed" aria-expanded="false">
+											<i class="fas fa-file-invoice"></i>
+											<p>Reportes</p>
+											<span class="caret"></span>
+										</a>
+										<div class="collapse @(ViewData["ActiveParent"]?.ToString() == "Reportes" ? "show" : "")" id="reportes">
+											<ul class="nav nav-collapse">
+												@if (pant.Contains("Gimnasios Reporte") || esAdmin == "True")
+												{
+													<li class="@(ViewData["ActivePage"]?.ToString() == "Gimnasios Reporte" ? "active" : "")">
+														<a asp-area="" asp-controller="ReporteGimnasios" asp-action="Index">
+															<span class="sub-item">Gimnasios Reporte</span>
+														</a>
+													</li>
+												}
+												@if (pant.Contains("Miembros Activos") || esAdmin == "True")
+												{
+												<li class="@(ViewData["ActivePage"]?.ToString() == "Miembros Activos" ? "active" : "")">
+													<a asp-area="" asp-controller="MiembrosActivos" asp-action="Index">
+														<span class="sub-item">Miembros Activos</span>
+													</a>
+												</li>
+												}
+											</ul>
+										</div>
+									</li>
+								}
+							}
+							else
+							{
+								<script type="text/javascript">
+									window.location.href = '/Home/Login';
+								</script>
+							}
+
+
+					}
+
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- End Sidebar -->
+
+	<div class="main-panel">
+		<div class="content">
+			<div class="panel-header p-4" style="padding-bottom: 0px;">
+				<div class="card bg-primary-gradient mb-0" style="overflow:hidden;">
+					<div class="page-inner py-4">
+							<div class="d-flex align-items-left align-items-md-center flex-column flex-md-row">
+								<div>
+									<h2 class="text-white pb-2 fw-bold">@ViewBag.PageTitle</h2>
+									<h5 class="text-white op-7 mb-2"><i class="fas fa-home"></i> > @ViewBag.PageTitle</h5>
+								</div>
+								@{
+									string imagen = ViewBag.PageTitle +".png" ;
+								}
+								<img src="~/img/@imagen" alt="Imagen" style="max-width:170px; position: absolute; opacity: 0.15; bottom:-20%; right:5%;" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="page-inner">
+					@RenderBody()
+			</div>
+		</div>
+	</div>
+
+	<!--   Core JS Files   -->
+	<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+	<script src="~/../js/core/popper.min.js"></script>
+	<script src="~/../js/core/bootstrap.min.js"></script>
+	@* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
+	<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+	<!-- jQuery UI -->
+	<script src="~/../js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+	<script src="~/../js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+	<!-- jQuery Scrollbar -->
+		<script src="~/../js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+
+	<!-- Chart JS -->
+		<script src="~/../js/plugin/chart.js/chart.min.js"></script>
+
+	<!-- jQuery Sparkline -->
+		<script src="~/../js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+	<!-- Chart Circle -->
+		<script src="~/../js/plugin/chart-circle/circles.min.js"></script>
+
+	<!-- Datatables -->
+		<script src="~/../js/plugin/datatables/datatables.min.js"></script>
+
+	
+
+	<!-- jQuery Vector Maps -->
+		<script src="~/../js/plugin/jqvmap/jquery.vmap.min.js"></script>
+		<script src="~/../js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+	<!-- Sweet Alert -->
+		<script src="~/../js/plugin/sweetalert/sweetalert.min.js"></script>
+
+	<!-- Atlantis JS -->
+		<script src="~/../js/atlantis.min.js"></script>
+
+		@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

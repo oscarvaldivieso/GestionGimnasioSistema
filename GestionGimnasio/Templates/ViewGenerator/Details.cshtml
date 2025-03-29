@@ -1,0 +1,171 @@
+@inherits Microsoft.VisualStudio.Web.CodeGeneration.Templating.RazorTemplateBase
+@using Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore
+@using System.Collections.Generic
+@using System.Linq
+@@model @Model.ViewDataTypeName
+
+@{
+    if (Model.IsPartialView)
+    {
+    }
+    else if (Model.IsLayoutPageSelected)
+    {
+@:@@{
+    @:ViewData["Title"] = "@Model.ViewName";
+        if (!string.IsNullOrEmpty(Model.LayoutPageFile))
+        {
+    @:Layout = "@Model.LayoutPageFile";
+        }
+@:}
+    }
+    else
+    {
+@:@@{
+    @:Layout = null;
+@:}
+@:
+@:<!DOCTYPE html>
+@:
+@:<html>
+@:<head>
+    @:<meta name="viewport" content="width=device-width" />
+    @:<title>@Model.ViewName</title>
+@:</head>
+@:<body>
+@:
+        //    PushIndent("    ");
+    }
+}
+<div class="card">
+    <div class="card-header" style="display:flex; justify-content:space-between">
+        <h1>Detalles</h1>
+        <div>
+        @{
+            string pkName = GetPrimaryKeyName();
+            if (pkName != null)
+            {
+            @:<a asp-action="Index" class="btn btn-warning" disable="disable">
+            @:<i class="fas fa-reply"></i>Volver</a>
+            }
+            else
+            {
+            @:<a asp-action="Index" class="btn btn-warning" disable="disable">Volver</a>
+            }
+        }
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+@{
+    Dictionary<string, IPropertyMetadata> propertyLookup = ((IModelMetadata)Model.ModelMetadata).Properties.ToDictionary(x => x.PropertyName, x => x);
+    Dictionary<string, INavigationMetadata> navigationLookup = ((IModelMetadata)Model.ModelMetadata).Navigations.ToDictionary(x => x.AssociationPropertyName, x => x);
+    int contador = 0;
+    List<string> camposFiltrados = new List<string>();
+    foreach (var item in Model.ModelMetadata.ModelType.GetProperties())
+    {
+        if (propertyLookup.TryGetValue(item.Name, out IPropertyMetadata property)
+            && property.Scaffold && !property.IsForeignKey && !property.IsPrimaryKey
+            && !item.Name.Contains("Fecha") && !item.Name.Contains("Estado"))
+        {
+            <div class="col-sm-4">
+                <dt>
+                    @@Html.DisplayNameFor(model => model.@GetValueExpression(property))
+                </dt>
+                <dd>
+                    @@Html.DisplayFor(model => model.@GetValueExpression(property))
+                </dd>
+            </div>
+            contador++;
+        }
+        else if (navigationLookup.TryGetValue(item.Name, out INavigationMetadata navigation)
+            && !item.Name.Contains("Usua"))
+        {
+            <div class="col-sm-4">
+                <dt>
+                    @@Html.DisplayNameFor(model => model.@GetValueExpression(navigation))
+                </dt>
+                <dd>
+                    @@Html.DisplayFor(model => model.@GetValueExpression(navigation).@navigation.DisplayPropertyName)
+                </dd>
+            </div>
+            contador++;
+        }
+        else if (propertyLookup.TryGetValue(item.Name, out property)
+            && property.Scaffold && !property.IsPrimaryKey)
+        {
+            if (item.Name.Contains("Fecha"))
+            {
+                camposFiltrados.Add(item.Name);
+            }
+            else if (property.IsForeignKey && item.Name.Contains("Usua"))
+            {
+                camposFiltrados.Add(item.Name);
+            }
+        }
+        if(contador==3)
+        {
+        contador = 0;
+        @:</dl>
+        @:<dl class="row">
+        }
+    }
+}
+        </dl>
+    </div>
+</div>
+<div class="row"></div>
+<div class="card">
+    <div class="card-header">
+        <h3>Auditoria</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Accion</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Creacion</th>
+                    <td>@@Html.DisplayFor(model => model.Usuar_CreacionNavigation.Usuar_Nombre)</td>
+                    <td>@@Html.DisplayFor(model => model.Fecha_Creacion)</td>
+                </tr>
+                <tr>
+                    <th>Modificacion</th>
+                    <td>@@Html.DisplayFor(model => model.Usuar_ModificacionNavigation.Usuar_Nombre)</td>
+                    <td>@@Html.DisplayFor(model => model.Fecha_Modificacion)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+@{
+    if (!Model.IsPartialView && !Model.IsLayoutPageSelected)
+    {
+        //ClearIndent();
+@:</body>
+@:</html>
+    }
+}
+@functions
+{
+    string GetPrimaryKeyName()
+    {
+        return (Model.ModelMetadata.PrimaryKeys != null && Model.ModelMetadata.PrimaryKeys.Length == 1)
+        ? Model.ModelMetadata.PrimaryKeys[0].PropertyName
+        : null;
+    }
+
+    string GetValueExpression(IPropertyMetadata property)
+    {
+        return property.PropertyName;
+    }
+
+    string GetValueExpression(INavigationMetadata navigation)
+    {
+        return navigation.AssociationPropertyName;
+    }
+}

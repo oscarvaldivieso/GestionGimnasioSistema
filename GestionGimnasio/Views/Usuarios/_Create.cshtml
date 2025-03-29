@@ -1,0 +1,135 @@
+﻿@model GestionGimnasio.Models.tbUsuarios
+
+
+    <!-- Card Structure -->
+    <div class="card mb-0" style="border-radius: 5px; overflow: hidden;">
+        <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+            <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+            "></div>
+            <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+            ">
+            <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Insertar un nuevo usuario</h5>
+            </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row"> 
+                            <div class="form-group col-md-6">
+                                <label asp-for="Usuar_Nombre" class="control-label"></label>
+                                <span class="text-danger">*</span>
+                                <input asp-for="Usuar_Nombre" class="form-control" />
+                                <span asp-validation-for="Usuar_Nombre" class="text-warning"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label asp-for="Usuar_Contrasena" class="control-label"></label>
+                                <span class="text-danger">*</span>
+                                <input asp-for="Usuar_Contrasena" class="form-control" type="password"/>
+                                <span asp-validation-for="Usuar_Contrasena" class="text-warning"></span>
+                            </div>
+                        </div>  <!-- Cierra la fila después de dos campos -->
+                        <div class="row"> 
+                            <div class="form-group col-md-6">
+                                <label asp-for="Emple_id" class="control-label"></label>
+                                <span class="text-danger">*</span>
+                                <select asp-for="Emple_id" class="form-control" asp-items="ViewBag.Emple_id" id="emple_id"></select>
+                                <span asp-validation-for="Emple_id" class="text-warning"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label asp-for="Roles_id" class="control-label"></label>
+                                <span class="text-danger">*</span>
+                                <select asp-for="Roles_id" class="form-control" asp-items="ViewBag.Roles_id"></select>
+                                <span asp-validation-for="Roles_id" class="text-warning"></span>
+                            </div>
+                        </div>  <!-- Cierra la fila después de dos campos -->
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <!-- Label superior -->
+                                <div class="mb-0">
+                                    <label asp-for="Usuar_EsAdmin" class="control-label" style="margin-bottom:0; padding-bottom:0;"></label>
+                                </div>
+
+                                <!-- Switch debajo -->
+                                <label class="rocker rocker-small d-block my-0">
+                                    <input type="checkbox" asp-for="Usuar_EsAdmin" />
+                                    <span class="switch-left">Si</span>
+                                    <span class="switch-right">No</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group d-flex justify-content-center mt-3">
+                            <button type="submit" class="primary-button mx-2" id="guardar">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                        <path fill="#fff" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+                                    </svg>
+                                    Insertar
+                                </span>
+                            </button>
+                            <button type="button" class="secondary-button mx-2" data-dismiss="modal">
+                                <span>
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill="none" d="M0 0h24v24H0z"></path>
+                                    <path fill="currentColor" d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                </svg>
+                                Cancelar
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+       </div>
+   </div>
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" />
+<script>
+    $(document).ready(function(){
+        $('#guardar').click(function(){
+            if($(".text-warning").length > 0){
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Rellena los campos necesarios.',
+                    position: 'topRight',
+                    timeout: 5000,
+                    close: false
+                });
+            }
+        });
+    })
+</script>
+
+
+
+
+
+

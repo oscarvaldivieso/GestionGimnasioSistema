@@ -1,0 +1,210 @@
+﻿@model GestionGimnasio.Models.tbClases
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Clases");
+}
+
+
+<div class="card" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+        <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+            "></div>
+            <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+            ">
+            <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Editar una clase</h5>
+            </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Edit" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <input type="hidden" asp-for="Clase_Id" />
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="Clase_Nombre" class="control-label"></label>
+                            <input asp-for="Clase_Nombre" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Clase_Descripcion" class="control-label"></label>
+                            <input asp-for="Clase_Descripcion" class="form-control" />
+                        </div>
+                    </div>  <!-- Cierra la fila después de dos campos -->
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <label class="control-label">Días de la semana</label>
+                            <div class="dropdown ">
+                                <button class="primary-button dropdown-toggle col-md-12 p-1" type="button" id="dropdownMenuButton">
+                                    <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                            <path fill="#fff" d="M152 64c0-8.8-7.2-16-16-16h-16c-8.8 0-16 7.2-16 16V96H80C53.5 96 32 117.5 32 144V432c0 26.5 21.5 48 48 48H368c26.5 0 48-21.5 48-48V144c0-26.5-21.5-48-48-48H344V64c0-8.8-7.2-16-16-16h-16c-8.8 0-16 7.2-16 16V96H152V64zm-72 160c0-8.8 7.2-16 16-16H352c8.8 0 16 7.2 16 16V416c0 8.8-7.2 16-16 16H96c-8.8 0-16-7.2-16-16V224zm64 64c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm96 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24zm96 0c-13.3 0-24 10.7-24 24s10.7 24 24 24 24-10.7 24-24-10.7-24-24-24z" />
+                                        </svg>
+
+                                        Seleccionar dias
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu w-100 px-3" id="dropdownMenu">
+                                    <div class="d-flex">
+                                        <!-- Primera columna -->
+                                        <div class="w-50">
+                                            @foreach (var dia in new List<string> { "Lunes", "Martes", "Miércoles", "Jueves" }.Select((value, index) => new { value, index }))
+                                            {
+                                        <li>
+                                            <label class="dropdown-item">
+                                                <input type="checkbox" class="dia-checkbox" value="@dia.value" /> @dia.value
+                                            </label>
+                                        </li>
+                                            }
+                            </div>
+
+                            <!-- Segunda columna -->
+                            <div class="w-50">
+                                            @foreach (var dia in new List<string> { "Viernes", "Sábado", "Domingo" }.Select((value, index) => new { value, index }))
+                                            {
+                                    <li>
+                                        <label class="dropdown-item">
+                                            <input type="checkbox" class="dia-checkbox" value="@dia.value" /> @dia.value
+                                        </label>
+                                    </li>
+                                            }
+                            </div>
+                        </div>
+                        </ul>
+                    </div>
+                    <input type="hidden" asp-for="Clase_Fecha" id="Clase_Fecha" />
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Gimna_Id" class="control-label"></label>
+                <select asp-for="Gimna_Id" class="form-control" asp-items="ViewBag.Gimna_Id"></select>
+            </div>
+        </div>  <!-- Cierra la fila después de dos campos -->
+
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label asp-for="Emple_Id" class="control-label"></label>
+                <select asp-for="Emple_Id" class="form-control" asp-items="ViewBag.Emple_Id"></select>
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="Clase_Capacidad" class="control-label"></label>
+                <input asp-for="Clase_Capacidad" class="form-control" />
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="Clase_HoraInicio" class="control-label"></label>
+                <input type="time" asp-for="Clase_HoraInicio" class="form-control" />
+            </div>
+            <div class="form-group col-md-3">
+                <label asp-for="Clase_HoraFin" class="control-label"></label>
+                <input type="time" asp-for="Clase_HoraFin" class="form-control" />
+            </div>
+
+        </div>  <!-- Cierra la fila después de dos campos -->
+                        <div class="form-group d-flex justify-content-center mt-3">
+                            <button type="submit" class="primary-button mx-2" id="guardar">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path fill="currentColor" d="M4 20h4l10.5-10.5-4-4L4 16v4zM14.5 5.5l4 4"></path>
+                                    </svg>
+                                    Editar
+                                </span>
+                            </button>
+                            <a class="secondary-button mx-2" asp-action="Index">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path fill="currentColor" d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                                    </svg>
+                                    Cancelar
+                                </span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+       </div>
+   </div>
+
+
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script>
+    
+
+    $(document).ready(function () {
+
+        $('#guardar').click(function(){
+            if($(".text-danger").length > 0){
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Rellena los campos necesarios.',
+                    position: 'topRight',
+                    timeout: 5000,
+                    close: false
+                });
+            }
+        });
+
+        // Obtener los días guardados en el input oculto
+        let savedDays = $("#Clase_Fecha").val();
+
+        if (savedDays) {
+            let daysArray = savedDays.split("-"); // Convertimos el string en un array
+
+            // Marcar los checkboxes que coincidan con los días guardados
+            $(".dia-checkbox").each(function () {
+                if (daysArray.includes($(this).val())) {
+                    $(this).prop("checked", true);
+                }
+            });
+        }
+
+        // Evento para capturar los días seleccionados al cambiar los checkboxes
+        $(".dia-checkbox").on("change", function () {
+            let selectedDays = [];
+            $(".dia-checkbox:checked").each(function () {
+                selectedDays.push($(this).val());
+            });
+            $("#Clase_Fecha").val(selectedDays.join("-")); // Guardamos los días seleccionados en el input oculto
+        });
+
+        // Evento para abrir/cerrar el dropdown de días de la semana
+        $("#dropdownMenuButton").on("click", function (e) {
+            e.stopPropagation(); // Evita que se cierre inmediatamente
+            let menu = $("#dropdownMenu");
+
+            if (menu.css("display") === "none") {
+                menu.css("display", "block");
+            } else {
+                menu.css("display", "none");
+            }
+        });
+    });
+</script>

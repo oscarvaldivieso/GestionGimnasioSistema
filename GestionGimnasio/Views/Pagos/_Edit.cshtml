@@ -1,0 +1,88 @@
+﻿@model GestionGimnasio.Models.tbPagos
+
+<div class="card" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+        <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+            "></div>
+            <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+            ">
+            <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Editar _Edit</h5>
+            </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Pagos_Id" />
+                        <div class="row"> 
+                        <div class="form-group col-md-6">
+                            <label asp-for="Clien_Id" class="control-label"></label>
+                            <select asp-for="Clien_Id" class="form-control" asp-items="ViewBag.Clien_Id"></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Plane_Id" class="control-label"></label>
+                            <select asp-for="Plane_Id" class="form-control" asp-items="ViewBag.Plane_Id"></select>
+                        </div>
+                        </div>  <!-- Cierra la fila después de dos campos -->
+                        <div class="row"> 
+                        <div class="form-group col-md-6">
+                            <label asp-for="MetPa_Id" class="control-label"></label>
+                            <select asp-for="MetPa_Id" class="form-control" asp-items="ViewBag.MetPa_Id"></select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Pagos_Fecha" class="control-label"></label>
+                            <input asp-for="Pagos_Fecha" class="form-control" />
+                        </div>
+                        </div>  <!-- Cierra la fila después de dos campos -->
+                        <div class="form-group d-flex justify-content-center mt-3">
+                            <button type="submit" class="primary-button mx-2">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 0h24v24H0z" fill="none"></path>
+                                        <path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    Guardar
+                                </span>
+                            </button>
+                            <button class="secondary-button mx-2" asp-action="Index">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path fill="currentColor" d="M15 18l-6-6 6-6"></path>
+                                    </svg>
+                                    Regresar
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+       </div>
+   </div>

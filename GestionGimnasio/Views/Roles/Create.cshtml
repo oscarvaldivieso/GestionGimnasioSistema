@@ -1,0 +1,188 @@
+﻿@model GestionGimnasio.Models.tbRoles
+
+@{
+    ViewData["Title"] = "Crear Rol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Roles");
+    var pantallas = ViewBag.Pantallas as List<GestionGimnasio.Models.tbPantallas>;
+}
+
+<div class="card" style="border-radius: 10px; overflow: hidden;">
+    <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+        <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+        "></div>
+        <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+         ">
+        <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Insertar un rol</h5>
+    </div>
+    <div class="card-body">
+        <form id="crearRolForm" asp-action="Create" method="post">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Roles_Descripcion" class="control-label"></label>
+                    <input asp-for="Roles_Descripcion" class="form-control" />
+                    <span asp-validation-for="Roles_Descripcion" class="text-warning"></span>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h4>Pantallas Disponibles</h4>
+                    <!--Vista de la pantalla, esta funcionando de milagro xd-->
+                    <div id="pantallasDisponibles" class="contenedor-pantallas draggable-zone">
+                        @foreach (var pantalla in pantallas)
+                        {
+                            <div class="pantalla my-3" draggable="true" data-id="@pantalla.Panta_Id">
+                                <i class="fas fa-align-justify"></i> @pantalla.Panta_Nombre
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!--Aqui deberian de ser arrastradas las pantallas xD-->
+                    <h4>Pantallas Permirtidas</h4>
+                    <div id="pantallasSeleccionadas" class="contenedor-pantallas">
+                    </div>
+                </div>
+            </div>
+            <!--El gpt dis que si funciona pa guardar los id de las pantallas en el servidor, como ni idea-->
+            <input type="hidden" id="pantallasSeleccionadasInput" name="pantallasSeleccionadas" />
+
+            <div class="form-group d-flex justify-content-center mt-3">
+                <button type="submit" class="primary-button mx-2" id="guardar">
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                            <path fill="#fff" d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
+                        </svg>
+                        Insertar
+                    </span>
+                </button>
+                <button class="secondary-button mx-2" id="regresar">
+                    <span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="currentColor" d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                        </svg>
+                        Cancelar
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+		$('#guardar').click(function(){
+			if($(".text-danger").length > 0){
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Rellana los campos necesarios.',
+                    position: 'topRight',
+                    timeout: 5000,
+                    close: false
+                });
+			}
+		});
+    })
+    $('#regresar').click(function(){
+        window.location.href = "/Roles/Index";
+        return false;
+    });
+</script>
+<style>
+    .contenedor-pantallas {
+        border: 1px solid #ccc;
+        min-height: 250px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .pantalla {
+        background-color: #f0f0f0;
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: move;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        //JS 
+        document.addEventListener('DOMContentLoaded', function () {
+            const pantallasDisponibles = document.getElementById('pantallasDisponibles');
+            const pantallasSeleccionadas = document.getElementById('pantallasSeleccionadas');
+            const pantallasSeleccionadasInput = document.getElementById('pantallasSeleccionadasInput');
+
+            let draggedItem = null;
+
+            function handleDragStart(e) {
+                draggedItem = e.target;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', e.target.innerHTML);
+                e.target.classList.add('dragging');
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                if (draggedItem) {
+                    if (e.target.id === 'pantallasSeleccionadas' && draggedItem.parentElement.id !== 'pantallasSeleccionadas') {
+                        pantallasSeleccionadas.appendChild(draggedItem);
+                    } else if (e.target.id === 'pantallasDisponibles' && draggedItem.parentElement.id !== 'pantallasDisponibles') {
+                        pantallasDisponibles.appendChild(draggedItem);
+                    }
+                    draggedItem.classList.remove('dragging');
+                    draggedItem = null;
+                    updatePantallasSeleccionadasInput();
+                }
+            }
+            
+            function updatePantallasSeleccionadasInput() {
+                const pantallasIds = Array.from(pantallasSeleccionadas.children).map(item => parseInt(item.dataset.id));
+                pantallasSeleccionadasInput.value = JSON.stringify(pantallasIds);
+                console.log(pantallasIds);
+            }
+
+            pantallasDisponibles.addEventListener('dragstart', handleDragStart);
+            pantallasSeleccionadas.addEventListener('dragstart', handleDragStart);
+            pantallasSeleccionadas.addEventListener('dragover', handleDragOver);
+            pantallasDisponibles.addEventListener('dragover', handleDragOver);
+            pantallasSeleccionadas.addEventListener('drop', handleDrop);
+            pantallasDisponibles.addEventListener('drop', handleDrop);
+        });
+    </script>
+}

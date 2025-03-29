@@ -1,0 +1,270 @@
+﻿@model GestionGimnasio.Models.tbEmpleados
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Empleados");
+}
+    <!-- Card Structure -->
+    <div class="card" style="border-radius: 10px; overflow: hidden;">
+        <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+            <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+            "></div>
+            <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+            ">
+            <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Create</h5>
+            </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Emple_Identidad" class="control-label"></label>
+							<span class="text-danger">*</span>
+                            <input type="text" asp-for="Emple_Identidad" class="form-control" id="dni" maxlength="15" />
+                            <span asp-validation-for="Emple_Identidad" class="text-warning"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Emple_FechaNacimiento" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <input type="date" asp-for="Emple_FechaNacimiento" class="form-control" />
+                            <span asp-validation-for="Emple_FechaNacimiento" class="text-warning"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Cargo_Id" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <select asp-for="Cargo_Id" class="form-control" id="Cargo_Id" asp-items="ViewBag.Cargo_Id">
+                                <option value="0">Seleccione Un Cargo:</option>
+                            </select>
+                            <span id="errorCargo" class="text-warning">Seleccione un Cargo</span>
+                        </div>
+                    </div>  <!-- Cierra la fila después de dos campos -->
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="Emple_PrimerNombre" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <input asp-for="Emple_PrimerNombre" class="form-control" />
+                            <span asp-validation-for="Emple_PrimerNombre" class="text-warning"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Emple_SegundoNombre" class="control-label"></label>
+                            <input asp-for="Emple_SegundoNombre" class="form-control" />
+                            <span asp-validation-for="Emple_SegundoNombre" class="text-warning"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Emple_PrimerApellido" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <input asp-for="Emple_PrimerApellido" class="form-control" />
+                            <span asp-validation-for="Emple_PrimerApellido" class="text-warning"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Emple_SegundoApellido" class="control-label"></label>
+                            <input asp-for="Emple_SegundoApellido" class="form-control" />
+                            <span asp-validation-for="Emple_SegundoApellido" class="text-warning"></span>
+                        </div>
+                    </div>  <!-- Cierra la fila después de dos campos -->
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="EsCiv_Id" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <select asp-for="EsCiv_Id" class="form-control" id="EsCiv_Id" asp-items="ViewBag.EsCiv_Id">
+                                <option value="0">Seleccione Un Estado Civil:</option>
+                            </select>
+                            <span id="errorCivil" class="text-warning">Seleccione un Estado CiviL</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="Emple_Sexo" class="control-label"></label>
+                            <div class="selectgroup w-100">
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="Emple_Sexo" value="M" class="selectgroup-input" checked="">
+                                    <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-male" style="color:darkblue"></i></span>
+                                </label>
+                                <label class="selectgroup-item">
+                                    <input type="radio" name="Emple_Sexo" value="F" class="selectgroup-input">
+                                    <span class="selectgroup-button selectgroup-button-icon"><i class="fas fa-female" style="color:deeppink"></i></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>  <!-- Cierra la fila después de dos campos -->
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label class="control-label">Departamentos</label>
+                            <span class="text-danger">*</span>
+                            <select id="Depar_Codigo" asp-for=Depar_Codigo class="form-control" asp-items="ViewBag.Depar_Codigo">
+                                <option value="0">Seleccione Un Departamento:</option>
+                            </select>
+                            <span id="errorDepa" class="text-warning">Seleccione un Departamento</span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Munic_Codigo" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <select asp-for="Munic_Codigo" class="form-control" id="Munic_Codigo" asp-items="ViewBag.Munic_Codigo"></select>
+                            <span id="errorMuni" class="text-warning">Seleccione un Municipio</span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Emple_Direccion" class="control-label"></label>
+                            <span class="text-danger">*</span>
+                            <input asp-for="Emple_Direccion" class="form-control" />
+                            <span asp-validation-for="Emple_Direccion" class="text-warning"></span>
+                        </div>
+                    </div>
+                    <div class="form-group d-flex justify-content-center mt-3">
+                            <button type="submit" class="primary-button mx-2" id="guardar">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M0 0h24v24H0z" fill="none"></path>
+                                        <path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                    Crear
+                                </span>
+                            </button>
+                            <button class="secondary-button mx-2" id="regresar">
+                                <span>
+                                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path fill="currentColor" d="M15 18l-6-6 6-6"></path>
+                                    </svg>
+                                    Regresar
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+       </div>
+   </div>
+
+@if (TempData["MensajeError"] != null)
+{
+    <script src="~/../js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script>
+        swal({
+            title: "Error",
+            text: "@TempData["MensajeError"]",
+            icon: "warning",
+            buttons: {
+                confirm: {
+                    className : 'btn btn-warning'
+                }
+            },
+        });
+    </script>
+}
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#guardar').click(function(){
+            if($(".text-warning").length > 0){
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Rellena los campos necesarios.',
+                    position: 'topRight',
+                    timeout: 5000,
+                    close: false
+                });
+            }
+        });
+    })
+    $("#errorDepa").hide();
+    $("#errorMuni").hide();
+    $("#errorCivil").hide();
+    $("#errorCargo").hide();
+    $(document).ready(function () {
+        $('#dni').mask('0000-0000-00000');
+        
+        $("#Depar_Codigo").change(function () {
+            $("#errorDepa").hide();
+        });
+        $("#Munic_Codigo").change(function () {
+            $("#errorMuni").hide();
+        });
+        $("#EsCiv_Id").change(function () {
+            $("#errorCivil").hide();
+        });
+        $("#Cargo_Id").change(function () {
+            $("#errorCargo").hide();
+        });
+
+		$("#guardar").click(function () {
+			if ($("#Depar_Codigo").val() == 0 ) {
+                $("#errorDepa").show();
+			}else{
+                $("#errorDepa").hide();
+            }
+            if ($("#Munic_Codigo").val() == 0 ) {
+                $("#errorMuni").show();
+            }else{
+                $("#errorMuni").hide();
+            }
+            if ($("#EsCiv_Id").val() == 0 ) {
+                $("#errorCivil").show();
+            }else{
+                $("#errorCivil").hide();
+            }
+            if ($("#Cargo_Id").val() == 0 ) {
+                $("#errorCargo").show();
+            }else{
+                $("#errorCargo").hide();
+            }
+		});
+        var cod = $("#Depar_Codigo").val();
+        if (cod) {
+            cargarMunicipios(cod);
+        }
+    });
+
+    $('#regresar').click(function(){
+        window.location.href = "/Empleados/Index";
+        return false;
+    });
+
+    $("#Depar_Codigo").change(function () {
+        var cod = $(this).val();
+        cargarMunicipios(cod);
+    });
+
+    function cargarMunicipios(cod) {
+        $.ajax({
+            url: "/Empleados/CargarMunicipio",
+            method: "POST",
+            dataType: "json",
+            data: { cod: cod },
+            success: function (data) {
+                $("#Munic_Codigo").empty();
+                $("#Munic_Codigo").append("<option value='0'>Seleccione Un Municipio:</option>");
+                $.each(data, function (key, value) {
+                    $("#Munic_Codigo").append("<option value='" + value.munic_Codigo + "'>" + value.munic_Nombre + "</option>");
+                });
+            }
+        });
+    }
+</script>

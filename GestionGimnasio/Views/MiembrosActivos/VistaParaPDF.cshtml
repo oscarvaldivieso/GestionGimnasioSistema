@@ -1,0 +1,74 @@
+﻿@model IEnumerable<GestionGimnasio.Models.tbClientes>
+
+@{
+    ViewData["Title"] = "VistaParaPDF";
+    Layout = null;
+    string fecha = DateTime.Now.ToString("dd/MM/yyyy");
+}
+<link rel="stylesheet" href="~/../css/bootstrap.min.css">
+<link rel="stylesheet" href="~/../css/atlantis.min.css">
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<div class="card">
+    <div class="row">
+        <h2 class="col-8">Reporte de Clientes Activos</h2>
+        <h2 class="col-2">@fecha</h2>
+    </div>
+    <div class="col-sm-12" style="display:block; justify-items:center">
+        <img src="~/img/logo-login.png" alt="Logo" class="img-fluid" style="max-width: 12%;">
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" id="tablaIndex">
+                <thead>
+                    <tr>
+                        <th>
+                            Identidad
+                        </th>
+                        <th>
+                            Nombre Completo
+                        </th>
+                        <th>
+                            Fecha de Nacimiento
+                        </th>
+                        <th>
+                            Estado en el gimnasio
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if(item.Clien_esMiembroActivo==true){
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Clien_Identidad)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Clien_PrimerNombre) @Html.DisplayFor(modelItem => item.Clien_PrimerApellido)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Clien_FechaNacimiento)
+                            </td>
+                            <td>
+                                @{
+                                    if (item.Clien_esMiembroActivo == true)
+                                    {
+                                        <p>Activo</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Inactivo</p>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+

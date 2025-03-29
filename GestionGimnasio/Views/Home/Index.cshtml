@@ -1,0 +1,197 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+	Context.Session.SetString("titulo", "Home");
+}
+
+@{
+	string nombreUsuario = Context.Session.GetString("Usuario");
+}
+
+
+			<div class="mt-2 mb-4">
+				<h2 class= "pb-2">¡Bienvenido de nuevo, @nombreUsuario!</h2>
+	<h5 class="op-7 mb-4">Entrena con pasión, progresa con constancia. 💪🔥.</h5>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="card card-dark bg-primary-gradient">
+						<div class="card-body pb-0">
+							<div class="h1 fw-bold float-right">+5%</div>
+							<h2 class="mb-2">17</h2>
+							<p>Usuarios registrados</p>
+							<div class="pull-in sparkline-fix chart-as-background">
+								<div id="lineChart"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card card-dark bg-secondary-gradient">
+						<div class="card-body pb-0">
+							<div class="h1 fw-bold float-right">-3%</div>
+							<h2 class="mb-2">27</h2>
+							<p>Rutinas disponibles</p>
+							<div class="pull-in sparkline-fix chart-as-background">
+								<div id="lineChart2"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card card-dark bg-success2">
+						<div class="card-body pb-0">
+							<div class="h1 fw-bold float-right">+7%</div>
+							<h2 class="mb-2">213</h2>
+							<p>Miembros registrados</p>
+							<div class="pull-in sparkline-fix chart-as-background">
+								<div id="lineChart3"><canvas width="327" height="70" style="display: inline-block; width: 327px; height: 70px; vertical-align: top;"></canvas></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-head-row">
+								<div class="card-title">Estadisticas de gimnasio</div>
+								<div class="card-tools">
+									<a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
+										<span class="btn-label">
+											<i class="fa fa-pencil"></i>
+										</span>
+										Exportar
+									</a>
+									<a href="#" class="btn btn-info btn-border btn-round btn-sm">
+										<span class="btn-label">
+											<i class="fa fa-print"></i>
+										</span>
+										Imprimir
+									</a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body">
+							<div class="chart-container" style="min-height: 375px">
+								<canvas id="statisticsChart"></canvas>
+							</div>
+							<div id="myChartLegend"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="card card-secondary">
+						<div class="card-header">
+							<div class="card-title">Ingresos en membresias</div>
+							<div class="card-category">March 25 - Hoy</div>
+						</div>
+						<div class="card-body pb-0">
+							<div class="mb-4 mt-2">
+								<h1>L. 1,203,424.23 </h1>
+							</div>
+							<div class="pull-in">
+								<canvas id="dailySalesChart"></canvas>
+							</div>
+						</div>
+					</div>
+					<div class="card card-primary bg-primary-gradient">
+						<div class="card-body">
+							<h4 class="mb-1 fw-bold">Meta de miembros registrados al mes</h4>
+							<div id="task-complete" class="chart-circle mt-4 mb-3"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+
+
+@* <!--   Core JS Files   -->
+<script src="../assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="../assets/js/core/popper.min.js"></script>
+<script src="../assets/js/core/bootstrap.min.js"></script>
+
+<!-- jQuery UI -->
+<script src="../assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="../assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="../assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+
+<!-- Chart JS -->
+<script src="../assets/js/plugin/chart.js/chart.min.js"></script>
+
+<!-- jQuery Sparkline -->
+<script src="../assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Chart Circle -->
+<script src="../assets/js/plugin/chart-circle/circles.min.js"></script>
+
+<!-- Datatables -->
+<script src="../assets/js/plugin/datatables/datatables.min.js"></script>
+
+<!-- Bootstrap Notify -->
+<script src="../assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+
+<!-- jQuery Vector Maps -->
+<script src="../assets/js/plugin/jqvmap/jquery.vmap.min.js"></script>
+<script src="../assets/js/plugin/jqvmap/maps/jquery.vmap.world.js"></script>
+
+<!-- Sweet Alert -->
+<script src="../assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+
+<!-- Atlantis JS -->
+<script src="../assets/js/atlantis.min.js"></script>
+
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="../assets/js/setting-demo.js"></script>
+<script src="../assets/js/demo.js"></script> *@
+
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script src="~/../js/plugin/jquery.sparkline/jquery.sparkline.min.js"></script>
+<!-- Chart JS -->
+<script src="~/../js/plugin/chart.js/chart.min.js"></script>
+<!-- Chart Circle -->
+<script src="~/../js/plugin/chart-circle/circles.min.js"></script>
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="~/../js/setting-demo.js"></script>
+<script src="~/../js/demo.js"></script>
+<!-- jQuery Scrollbar -->
+<script src="~/../js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+
+
+
+<!-- Datatables -->
+<script src="~/../js/plugin/datatables/datatables.min.js"></script>
+
+<!-- Sweet Alert -->
+<script src="~/../js/plugin/sweetalert/sweetalert.min.js"></script>
+<script>
+	$('#lineChart').sparkline([102,109,120,99,110,105,115], {
+		type: 'line',
+		height: '70',
+		width: '100%',
+		lineWidth: '2',
+		lineColor: 'rgba(255, 255, 255, .5)',
+		fillColor: 'rgba(255, 255, 255, .15)'
+	});
+
+	$('#lineChart2').sparkline([99,125,122,105,110,124,115], {
+		type: 'line',
+		height: '70',
+		width: '100%',
+		lineWidth: '2',
+		lineColor: 'rgba(255, 255, 255, .5)',
+		fillColor: 'rgba(255, 255, 255, .15)'
+	});
+
+	$('#lineChart3').sparkline([105,103,123,100,95,105,115], {
+		type: 'line',
+		height: '70',
+		width: '100%',
+		lineWidth: '2',
+		lineColor: 'rgba(255, 255, 255, .5)',
+		fillColor: 'rgba(255, 255, 255, .15)'
+	});
+</script>

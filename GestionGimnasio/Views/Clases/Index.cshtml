@@ -1,0 +1,174 @@
+﻿@model IEnumerable<GestionGimnasio.Models.tbClases>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Clases");
+}
+<div class="card">
+    <div class="card-header">
+        <a type="button" class="secondary-button mx-2 mb-0" asp-action="Create">
+            <span>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                    <path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                </svg>
+                Nuevo
+            </span>
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" id="tablaIndex">
+                <thead>
+                    <tr>
+                        <th style="width:10%">
+                            Acciones
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Clase_Nombre)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Clase_Descripcion)
+                        </th>
+                        <th>
+                            Dias en que se imparte
+                        </th>
+                        <th>
+                            Horario
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Clase_Capacidad) personas
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Emple)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Gimna)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            <div class="dropdown">
+                                <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-cogs"></i> Acciones
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <!--Url para edit-->
+                                    <a asp-action="Edit" asp-route-id="@item.Clase_Id" class="btn btn-outline-warning" style="width:100%">
+                                      <i class="fas fa-pencil-alt"></i> Editar</a>
+                                    <a asp-action="Details" asp-route-id="@item.Clase_Id" class="btn btn-outline-info" style="width:100%">
+                                      <i class="fas fa-info"></i> Detalles</a>
+                                    <button class="btn btn-outline-danger" onclick="eliminar(@item.Clase_Id)"style="width:100%">
+                                      <i class="fas fa-trash-alt"></i> Eliminar</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clase_Nombre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clase_Descripcion)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clase_Fecha) 
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clase_HoraInicio) - @Html.DisplayFor(modelItem => item.Clase_HoraFin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Clase_Capacidad)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Emple.Emple_PrimerNombre) @Html.DisplayFor(modelItem => item.Emple.Emple_PrimerApellido)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gimna.Gimna_Nombre)
+                        </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (TempData["MensajeExito"] != null)
+{
+    <script src="~/../js/plugin/sweetalert/sweetalert.min.js"></script>
+    <script>
+        swal({
+            title: "¡Éxito!",
+            text: "@TempData["MensajeExito"]",
+            icon: "success",
+            buttons: {
+                confirm: {
+                    className : 'btn btn-success'
+                }
+            },
+        });
+    </script>
+}
+
+
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script src="~/../js/plugin/datatables/datatables.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#tablaIndex").DataTable();
+
+        var mensajeError = '@TempData["MensajeError"]';
+
+        if (mensajeError) {
+            iziToast.error({
+                title: 'Error',
+                message: mensajeError,
+                position: 'topRight'
+            });
+        }
+    });
+      //modal abrir
+    $("#crear").click(function(){
+        $("#modalCrear").modal("show");
+    });
+
+    //modal editar
+    function edit(id){
+        var url = "/Clases/Edit/" + id;
+        $("#modalbody").load(url, function(){
+            $("#modalEditar").modal("show");
+        });
+    }
+
+	//eliminar
+    function eliminar(id) {
+        localStorage.setItem("Clase_Id", id);
+            swal({
+                icon : "error",
+                title: 'Eliminar',
+                text: "¿Deseas eliminar este registro?",
+                type: 'warning',
+                buttons:{
+                    confirm: {
+                        text : 'Si, eliminar',
+                        className : 'btn btn-danger'
+                    },
+                    cancel: {
+                        visible: true,
+                        className: 'btn btn-danger btn-border'
+                    }
+                }
+            }).then((Delete) => {
+                if (Delete) {
+                    var id = localStorage.getItem("Clase_Id");
+                    var url = "/Clases/Delete/" + id;
+                    location.href = url;
+                } else {
+                    swal.close();
+                }
+            });
+    }
+</script>

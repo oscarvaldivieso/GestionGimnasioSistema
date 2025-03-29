@@ -1,0 +1,279 @@
+﻿@model GestionGimnasio.Models.tbPlanes
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string dia = DateTime.Now.ToString("dd/MM/yyyy");
+    Context.Session.SetString("titulo", "Planes");
+}
+<div class="card">
+    <div class="card-header" style="display:flex; justify-content:space-between">
+        <h1>Detalles</h1>
+        <div>
+            <a asp-action="Index" class="btn btn-warning" disable="disable">
+                <i class="fas fa-reply"></i>Volver</a>
+            <button class="btn btn-info" disable="disable" id="GifCard">GifCard</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Plane_Nombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Plane_Nombre)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Plane_Descripcion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Plane_Descripcion)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Plane_DuracionDias)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Plane_DuracionDias) dias
+                </dd>
+            </div>
+        </dl>
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Plane_Precio)
+                </dt>
+                <dd>
+                    L. @Html.DisplayFor(model => model.Plane_Precio)
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+<div class="row"></div>
+<div class="card">
+    <div class="card-header">
+        <h3>Auditoria</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Accion</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Creacion</th>
+                    <td>@Html.DisplayFor(model => model.Usuar_CreacionNavigation.Usuar_Nombre)</td>
+                    <td>@Html.DisplayFor(model => model.Fecha_Creacion)</td>
+                </tr>
+                <tr>
+                    <th>Modificacion</th>
+                    <td>@Html.DisplayFor(model => model.Usuar_ModificacionNavigation.Usuar_Nombre)</td>
+                    <td>@Html.DisplayFor(model => model.Fecha_Modificacion)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal animated fadeInDownBig" tabindex="-1" role="dialog" id="modalGifCard">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color:#fff0">
+            <div class="modal-body p-0">
+                <div class="col-sm-12" style="display:flex; justify-content:center">
+                    <div class="plan">
+                        <div class="inner">
+                            <span class="pricing">
+                                <span>
+                                    L. @Model.Plane_Precio <small>/ C.</small>
+                                </span>
+                            </span>
+                            <p class="title">@Model.Plane_Nombre</p>
+                            <p class="info">@Model.Plane_Descripcion</p>
+                            <ul class="features">
+                                <li>
+                                    <span class="icon">
+                                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                            <path fill="currentColor" d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                                        </svg>
+                                    </span>
+                                    <span><strong>Gim</strong>: espacio libre en las instalaciones</span>
+                                </li>
+                                <li>
+                                    <span class="icon">
+                                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                            <path fill="currentColor" d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                                        </svg>
+                                    </span>
+                                    <span>Seguridad: <strong>ofrece un entorno seguro</strong></span>
+                                </li>
+                                <li>
+                                    <span class="icon">
+                                        <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0 0h24v24H0z" fill="none"></path>
+                                            <path fill="currentColor" d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z"></path>
+                                        </svg>
+                                    </span>
+                                    <span>@Model.Plane_DuracionDias Dias</span>
+                                </li>
+                            </ul>
+                            <div class="action">
+                                <a class="button" href="#" id="Comprar">
+                                    Comprar Plan
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+.plan {
+	border-radius: 16px;
+	box-shadow: 0 30px 30px -25px rgba(121, 111, 29, 0.36   );
+	padding: 10px;
+	background-color: #32330512;
+	color: #000;
+	max-width: 300px;
+}
+
+.plan strong {
+	font-weight: 600;
+	color: #425275;
+}
+
+.plan .inner {
+	align-items: center;
+	padding: 20px;
+	padding-top: 40px;
+	background-color: #ecf0ff;
+	border-radius: 12px;
+	position: relative;
+}
+
+.plan .pricing {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background-color: #c1870078;
+	border-radius: 99em 0 0 99em;
+	display: flex;
+	align-items: center;
+	padding: 0.625em 0.75em;
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: #000;
+}
+
+.plan .pricing small {
+	color: #707a91;
+	font-size: 0.75em;
+	margin-left: 0.25em;
+}
+
+.plan .title {
+	font-weight: 600;
+	font-size: 1.25rem;
+	color: #425675;
+}
+
+.plan .title + * {
+	margin-top: 0.75rem;
+}
+
+.plan .info + * {
+	margin-top: 1rem;
+}
+
+.plan .features {
+	display: flex;
+	flex-direction: column;
+}
+
+.plan .features li {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.plan .features li + * {
+	margin-top: 0.75rem;
+}
+
+.plan .features .icon {
+	background-color: #1FCAC5;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+}
+
+.plan .features .icon svg {
+	width: 14px;
+	height: 14px;
+}
+
+.plan .features + * {
+	margin-top: 1.25rem;
+}
+
+.plan .action {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: end;
+}
+
+.plan .button {
+	background-color: #000;
+	border-radius: 6px;
+	color: #fff;
+	font-weight: 500;
+	font-size: 1.125rem;
+	text-align: center;
+	border: 0;
+	outline: 0;
+	width: 100%;
+	padding: 0.625em 0.75em;
+	text-decoration: none;
+}
+
+.plan .button:hover, .plan .button:focus {
+	background-color: #aea893 ;
+}
+</style>
+
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$("#GifCard").click(function () {
+			$("#modalGifCard").modal("show");
+        });
+        $("#Comprar").click(function(){
+            iziToast.success({
+                title: 'Comprado<br/><br/><br/>',
+                message: '@Model.Plane_Nombre<br />L.@Model.Plane_Precio<br />@dia',
+                position: 'topRight',
+                timeout: 5000,
+                close: false
+            });
+        });
+	});
+</script>

@@ -1,0 +1,201 @@
+﻿@model GestionGimnasio.Models.tbRoles
+
+@{
+    ViewData["Title"] = "Editar Rol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Roles");
+    var pantallas = ViewBag.Pantallas as List<GestionGimnasio.Models.tbPantallas>;
+    var pantallasAsignadas = ViewBag.PantallasAsignadas as List<int>;
+}
+
+<div class="card" style="border-radius: 10px; overflow: hidden;">
+    <div class="card-header" style="
+        background-color: #000000;
+        opacity: 1;
+        background-image:
+            linear-gradient(rgba(255, 255, 255, 0.05) 1.7px, transparent 0.5px),
+            linear-gradient(to right, rgba(255, 255, 255, 0.05) 0.2px, #000000 1.7px);
+        background-size: 55px 55px;
+        color: white;
+        min-height: 15vh;
+        display: flex;
+        align-items: flex-end;
+        padding-left: 20px;
+        padding-bottom: 10px;
+        ">
+        <div style="
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 40%;
+                    height: 100%;
+                    background: radial-gradient(circle at right, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+                    pointer-events: none;
+        "></div>
+        <img src="~/img/dumbbell-solid.svg" alt="Dumbbell Icon" style="
+                position: absolute;
+                top: -2%;
+                right: 5%;
+                width: 300px; /* Ajusta el tamaño de la imagen */
+                height: auto;
+                opacity: 0.04; /* Ajusta la transparencia */
+                pointer-events: none;
+         ">
+        <h5 class="card-title" style="font-size: 21px; color: white; font-weight:600">Editar rol</h5>
+    </div>
+    <div class="card-body">
+        <form id="editarRolForm" asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Roles_Id" />
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Roles_Descripcion" class="control-label"></label>
+                    <input asp-for="Roles_Descripcion" class="form-control"/>
+                    <span asp-validation-for="Roles_Descripcion" class="text-warning"></span>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <h4>Pantallas Disponibles</h4>
+                    <div id="pantallasDisponibles" class="contenedor-pantallas">
+                        @foreach (var pantalla in pantallas)
+                        {
+                            if (!pantallasAsignadas.Contains(pantalla.Panta_Id))
+                            {
+                                <div class="pantalla my-3" draggable="true" data-id="@pantalla.Panta_Id">
+                                    <i class="fas fa-align-justify"></i> @pantalla.Panta_Nombre
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Pantallas Asignadas</h4>
+                    <div id="pantallasSeleccionadas" class="contenedor-pantallas">
+                        @foreach (var pantalla in pantallas.Where(p => pantallasAsignadas.Contains(p.Panta_Id)))
+                        {
+                            <div class="pantalla my-3" draggable="true" data-id="@pantalla.Panta_Id">
+                                <i class="fas fa-align-justify"></i> @pantalla.Panta_Nombre
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" id="pantallasSeleccionadasInput" name="pantallasSeleccionadas" />
+
+            <div class="form-group d-flex justify-content-center mt-3">
+                <button type="submit" class="primary-button mx-2" id="guardar">
+                    <span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                            <path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        Guardar
+                    </span>
+                </button>
+                <button class="secondary-button mx-2" id="regresar">
+                    <span>
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path fill="currentColor" d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                        </svg>
+                        Cancelar
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/../js/core/jquery.3.2.1.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#guardar').click(function(){
+            if($(".text-danger").length > 0){
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Rellena los campos necesarios.',
+                    position: 'topRight',
+                    timeout: 5000,
+                    close: false
+                });
+            }
+        });
+    })
+    $('#regresar').click(function(){
+        window.location.href = "/Roles/Index";
+        return false;
+    });
+</script>
+
+
+<style>
+    .contenedor-pantallas {
+        border: 1px solid #ccc;
+        min-height: 250px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .pantalla {
+        background-color: #f0f0f0;
+        padding: 8px;
+        margin: 5px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: move;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        //JS
+        document.addEventListener('DOMContentLoaded', function () {
+            const pantallasDisponibles = document.getElementById('pantallasDisponibles');
+            const pantallasSeleccionadas = document.getElementById('pantallasSeleccionadas');
+            const pantallasSeleccionadasInput = document.getElementById('pantallasSeleccionadasInput');
+
+            let draggedItem = null;
+
+            function handleDragStart(e) {
+                draggedItem = e.target;
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/html', e.target.innerHTML);
+                e.target.classList.add('dragging');
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            }
+
+            function handleDrop(e) {
+                e.preventDefault();
+                if (draggedItem) {
+                    if (e.target.id === 'pantallasSeleccionadas' && draggedItem.parentElement.id !== 'pantallasSeleccionadas') {
+                        pantallasSeleccionadas.appendChild(draggedItem);
+                    } else if (e.target.id === 'pantallasDisponibles' && draggedItem.parentElement.id !== 'pantallasDisponibles') {
+                        pantallasDisponibles.appendChild(draggedItem);
+                    }
+                    draggedItem.classList.remove('dragging');
+                    draggedItem = null;
+                    updatePantallasSeleccionadasInput();
+                }
+            }
+
+            function updatePantallasSeleccionadasInput() {
+                const pantallasIds = Array.from(pantallasSeleccionadas.children).map(item => parseInt(item.dataset.id));
+                pantallasSeleccionadasInput.value = JSON.stringify(pantallasIds);
+                console.log(pantallasIds);
+            }
+
+            pantallasSeleccionadas.addEventListener('dragstart', handleDragStart);
+            pantallasSeleccionadas.addEventListener('dragover', handleDragOver);
+            pantallasSeleccionadas.addEventListener('drop', handleDrop);
+            pantallasDisponibles.addEventListener('dragover', handleDragOver);
+            pantallasDisponibles.addEventListener('dragstart', handleDragStart);
+            pantallasDisponibles.addEventListener('drop', handleDrop);
+        });
+    </script>
+}

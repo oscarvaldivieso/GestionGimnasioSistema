@@ -1,0 +1,135 @@
+﻿@model GestionGimnasio.Models.tbEmpleados
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Context.Session.SetString("titulo", "Empleados");
+}
+<div class="card">
+    <div class="card-header" style="display:flex; justify-content:space-between">
+        <h1>Detalles</h1>
+        <div>
+            <a asp-action="Index" class="btn btn-warning" disable="disable">
+            <i class="fas fa-reply"></i>Volver</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_Identidad)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_Identidad)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_PrimerNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_PrimerNombre)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_SegundoNombre)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_SegundoNombre)
+                </dd>
+            </div>
+        </dl>
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_PrimerApellido)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_PrimerApellido)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_SegundoApellido)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_SegundoApellido)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_Sexo)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_Sexo)
+                </dd>
+            </div>
+        </dl>
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Emple_Direccion)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Emple_Direccion)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Cargo)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Cargo.Cargo_Nombre)
+                </dd>
+            </div>
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.EsCiv)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EsCiv.EsCiv_Descripcion)
+                </dd>
+            </div>
+        </dl>
+        <dl class="row">
+            <div class="col-sm-4">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Munic_CodigoNavigation)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Munic_CodigoNavigation.Munic_Codigo)
+                </dd>
+            </div>
+        </dl>
+    </div>
+</div>
+<div class="row"></div>
+<div class="card">
+    <div class="card-header">
+        <h3>Auditoria</h3>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Accion</th>
+                    <th>Usuario</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Creacion</th>
+                    <td>@Html.DisplayFor(model => model.Usuar_CreacionNavigation.Usuar_Nombre)</td>
+                    <td>@Html.DisplayFor(model => model.Fecha_Creacion)</td>
+                </tr>
+                <tr>
+                    <th>Modificacion</th>
+                    <td>@Html.DisplayFor(model => model.Usuar_ModificacionNavigation.Usuar_Nombre)</td>
+                    <td>@Html.DisplayFor(model => model.Fecha_Modificacion)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
